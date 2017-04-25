@@ -1,5 +1,5 @@
 # Introduction to TicTacToe++
-Source code for game 
+Source code for game. Copy everything below. 
 
 
 // Tic Tac Toe App
