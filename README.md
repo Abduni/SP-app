@@ -2,11 +2,10 @@
 Source code for game. Copy everything below. 
 
 
-// Tic Tac Toe App
-// By: Abduni Idris
+
 
 PVector savedMouse = new PVector(-1, -1);
-//colors used for background
+
 final int GREEN = color(70, 255, 65);
 final int PURPLE = color(190, 30, 255);
 final int PINK = color(255, 55, 255);
@@ -34,7 +33,7 @@ final int MAX_POS = 9;
 PImage img=null;
 PImage img2=null;
 PImage img3=null;
-//if false images wont be displayed. Used when debugging and testing program
+
 Boolean webImages = true;
 
 void setup() {
@@ -56,7 +55,7 @@ void loadImages() {
   }
 }
 
-//scaling everything to fit new screen size
+
 void adjustSize() {
   float frac = (float)width/REFERENCE_WIDTH;
   cellWidth*=frac;
@@ -89,8 +88,8 @@ int[] yPositions3={0, 30, 33, 35, 40, 50, 80, 85, 250, 400, 405, 425, 460, 480, 
 void drawboard() {
   background(BACKGROUND);
   ellipseMode(CORNER);
-  strokeWeight(5); // thickness of lines
-  stroke(BLACK);  // black lines
+  strokeWeight(5); 
+  stroke(BLACK);  
   //four lines to draw the tic tac toe board
   line(xPositions[1], yPositions[0], xPositions[1], yPositions[9]);
   line(xPositions[2], yPositions[0], xPositions[2], yPositions[9]);
@@ -105,37 +104,31 @@ void drawboard() {
   displayTurn();
 }
 
-// used to take turns drawing Xs and Os
+
 boolean Xsturn = true;
 
-//updated each time mouse is clicked 
+
 int prevFrameCount=0;
 
 void mousePressed() { 
-  //Because some phone processing apps register clicks too fast (multiple clicks registered in a row) a restriciton is created using framecount
   if (frameCount-prevFrameCount<15) {
     return;
   } 
   prevFrameCount=frameCount;
-  //variables that represent x and y positions of the mouse and will be used to give values to positions (used in getPosition)
   savedMouse.x = mouseX;
   savedMouse.y = mouseY;
   int location = getPosition();
-  // events that can occur on board page
   if (!showWords && !displayScores) {
     boardPageEvent(location);
     playerWin();
-    //events that can occur on levels page
   } else if (showWords && !displayScores) {
     levelsPageEvent(location);
-    // events that can occur on scoreboard page
   } else if (displayScores) {
     scoreboardPageEvent(location);
   } 
-  //println("Turn Counter: " + turnCounter);
 }
 
-// saved values for each button on board page
+
 final int NEWGAME = 10;
 final int SKIP = 11;
 final int SCOREBOARD = 70; 
@@ -153,7 +146,6 @@ void boardPageEvent(int location) {
     turnCounter = 0;
     endgame = false;
   } else if (location==SKIP && !endgame) {
-    //println("Skip Button");
     skipTurn();
     displayTurn();
   } else if (location==SCOREBOARD) {
@@ -171,7 +163,6 @@ void scoreboardPageEvent (int location) {
 void levelsPageEvent(int location) {
   if (location <= 61 && location > 0) {
     selectedWords = levelsArray[location-1];
-    // println("Displaying board for level " + location);
     shuffleWord(location);
     showWords=false;
     BACKGROUND=randomColor[int(random(randomColor.length))];
@@ -179,7 +170,7 @@ void levelsPageEvent(int location) {
   }
 }
 
-// All sound words in Team Read curriculum (61 levels)
+
 String[][] levelsArray = {
   {"the", "and", "to", "of", "a", "in", "", "", ""}, 
   {"is", "that", "he", "you", "it", "for", "", "", ""}, 
@@ -244,16 +235,15 @@ String[][] levelsArray = {
   {"test", "rope", "cotton", "apple", "details", "entire", "corn", "center", "smell", "tools", "square", "cows", "track", "arrived", "located"}
 };
 
-// setup in the drawWord method 
+
 String[] selectedWords = levelsArray[0];
 
 
-//even though its blank this method is needed so that everything in the program draws
 void draw() {
 }
 
 
-//arrays of positions used on 
+ 
 int[] xPositions = {35, 135, 235, 35, 135, 235, 35, 135, 235, 335};   
 int[] yPositions = {50, 50, 50, 150, 150, 150, 250, 250, 250, 350};  
 int[] boardState = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -263,7 +253,7 @@ void placeWords() {
     drawWord(i);
   }
 }
-// draw each word in a specific location on the board 
+
 void drawWord(int position) {
   textSize(TS*4);
   textAlign(CENTER, CENTER);
@@ -341,9 +331,7 @@ void displayTurn () {
 
 boolean endgame = false;
 
-// changes boolean to allow user to skip turn
 void skipTurn() {
-  //println("Skip");
     Xsturn=!Xsturn;
 }
 
@@ -352,8 +340,6 @@ int Player2wins = 0;
 int turnCounter = 0;
 
 
-
-// Checks the board state to determine whether player 1 or player 2 wins or ties
 void playerWin() {
   if ((boardState[0]==1 && boardState[1]==1 && boardState[2]==1) || (boardState[3]==1 && boardState[4]==1 && boardState[5]==1) || (boardState[6]==1 && boardState[7]==1 && boardState[8]==1) 
     || (boardState[0]==1 && boardState[3]==1 && boardState[6]==1) || (boardState[1]==1 && boardState[4]==1 && boardState[7]==1) || (boardState[2]==1 && boardState[5]==1 && boardState[8]==1) 
@@ -369,7 +355,6 @@ void playerWin() {
     Player1wins ++;
     turnCounter = 0;
     endgame = true;
-    // doesn't allow user to keep playing after a winner is declared
     for (int i=0; i < boardState.length; i++) {
       boardState[i]=4;
     }
@@ -387,7 +372,6 @@ void playerWin() {
     Player2wins ++;
     turnCounter = 0;
     endgame = true;
-    // doesn't allow user to keep playing after a winner is declared
     for (int i=0; i < boardState.length; i++) {
       boardState[i]=4;
     }
@@ -405,7 +389,6 @@ void playerWin() {
 
 int getPosition() {
   if (!showWords && !displayScores) {
-    //positions for buttons and board on board
     if (savedMouse.x >= xPositions[0] && savedMouse.x < xPositions[1] && savedMouse.y < yPositions[3] && savedMouse.y >= yPositions[0]) {
       return 1;
     } else if ((savedMouse.x >= xPositions[1] && savedMouse.x < xPositions[2]) && savedMouse.y < yPositions[4]) {
@@ -432,9 +415,7 @@ int getPosition() {
     } else if (savedMouse.x >= xPositions[1]  && savedMouse.x <= xPositions[2]  && savedMouse.y >= yPositions3[14]  && savedMouse.y < yPositions3[16]) {
       return 11;
     } 
-    //positions for buttons on words page
   } else if (showWords && !displayScores) {
-    // first column of levels
     if (savedMouse.x >= xPositions2[0] && savedMouse.x < xPositions2[1]) {
       if (savedMouse.y >= 0 && savedMouse.y <= yPositions2[0]) {
         return 1;
@@ -445,7 +426,6 @@ int getPosition() {
         }
       }
     }  
-    // second column of levels
     if (savedMouse.x >= xPositions2[2] && savedMouse.x < xPositions2[3]) {
       if (savedMouse.y > 0 && savedMouse.y <= yPositions2[0]) {
         return 18;
@@ -456,7 +436,6 @@ int getPosition() {
         }
       }
     }
-    // third column of levels
     if (savedMouse.x >= xPositions2[4] && savedMouse.x < xPositions2[5]) {
       if (savedMouse.y > 0 && savedMouse.y <= yPositions2[0]) {
         return 35;
@@ -467,7 +446,6 @@ int getPosition() {
         }
       }
     }
-    // fourth column of levels
     if (savedMouse.x >= xPositions2[5] && savedMouse.x < xPositions2[6]) {
       if (savedMouse.y > 0 && savedMouse.y <= yPositions2[0]) {
         return 52;
@@ -479,7 +457,6 @@ int getPosition() {
       }
     }
   } 
-  //position of BACK button on scoreboard page
   else {
     if (savedMouse.x >= xPositions3[0]  && savedMouse.x <= xPositions3[8]  && savedMouse.y >= yPositions3[14] && savedMouse.y <= yPositions3[16]) {
       return 70;
@@ -488,13 +465,10 @@ int getPosition() {
   return -1;
 }
 
-// Starts a new game
 void resetGame() {
-  // Reset the state of the board
   for (int i=0; i < boardState.length; i++) {
     boardState[i]=0;
   }
-  // Draw an X first after game is reset
   Xsturn=true;
   endgame = false;
   P1 = "Player 1: X";
@@ -502,9 +476,8 @@ void resetGame() {
   drawboard();
 }
 
-//
+
 void restoreBoard() {
-  // Use notTaken array to determine whether each position should be blank, have an X or circle
   for (int i=0; i< boardState.length; i++) {
     int pos = i+1;
     if (boardState[i]==1) {
@@ -520,10 +493,9 @@ void restoreBoard() {
 }
 
 boolean showWords = false;
-//displays either the levels page or the board 
 void switchPage () {
-  background(BACKGROUND); // clears the screen
-  showWords=!showWords;  // flips whether we are showing words vs board
+  background(BACKGROUND); 
+  showWords=!showWords;  
   if (showWords) {
     wordPage();
   } else {
@@ -544,7 +516,6 @@ void wordPage () {
     text("Level " + (i+18), xPositions2[2], yPositions3[1]*i);
     text("Level " + (i+35), xPositions2[4], yPositions3[1]*i);
     int level = (i+52);
-    // 4th column has different number of levels then the rest
     if (level <= 61) {
       text("Level " + (i+52), xPositions3[14], yPositions3[1]*i);
     }
@@ -552,7 +523,6 @@ void wordPage () {
 }
 
 
-// shuffles words to randomly choose 9 words to draw onto board
 void shuffleWord (int level) {
   String[] words = levelsArray[level-1];
   for (int i=1; i<words.length; i++) {
@@ -562,7 +532,7 @@ void shuffleWord (int level) {
     words[i-1]=x;
   }
 } 
-//determines whether or not to show scoreboard page
+
 boolean displayScores = false; 
 
 void scoreboard () {
